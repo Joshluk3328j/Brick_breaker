@@ -1,3 +1,4 @@
+from itertools import count
 from random import random
 import turtle
 import time
@@ -16,11 +17,28 @@ pen.penup()
 pen.hideturtle()
 pen.goto(0, 230)
 pen.write('Score: 0  High score: 0', align='center', font=("Helvetica", "16"))
-pen.goto(0, 210)
-pen.color('white')
-pen.write('_________________________________________________________________________________',
-          align='center', font=("Helvetica", "16"))
 
+
+# boundary
+pen2 = turtle.Turtle()
+pen2.color('white')
+pen2.penup()
+
+
+def drw_boundary():
+    pen2.hideturtle()
+    pen2.penup()
+    pen2.goto(320, 320)
+    pen2.pendown()
+    pen2.goto(320, -290)
+    pen2.goto(-290, -290)
+    pen2.goto(-290, 320)
+    pen2.goto(320, 320)
+    pen2.goto(320, 210)
+    pen2.goto(-290, 210)
+
+
+drw_boundary()
 # ball
 ball = turtle.Turtle()
 ball.speed(3)
@@ -41,74 +59,78 @@ board.goto(0, -250)
 board.direction = "stop"
 
 
-# background pic
-# bg = turtle.bgpic('bg.png')
-
 # make bricks
-def make_bricks():
-    x = 300
-    y = 190
-    for brick in range(20):
-        brick = turtle.Turtle()
-        brick.speed(0)
-        brick.color('black')
-        brick.shape('square')
-        brick.penup()
-        brick.hideturtle()
-        brick.goto(x, y)
-        brick.color('blue')
-        brick.showturtle()
-        x -= 30
-        if x == -300:
-            break
-    x = 300
-    y = 140
-    for brick in range(20):
-        brick = turtle.Turtle()
-        brick.speed(0)
-        brick.color('black')
-        brick.shape('square')
-        brick.penup()
-        brick.hideturtle()
-        brick.goto(x, y)
-        brick.color('blue')
-        brick.showturtle()
-        x -= 30
-        if x == -300:
-            break
-    x = 300
-    y = 90
-    for brick in range(20):
-        brick = turtle.Turtle()
-        brick.speed(0)
-        brick.color('black')
-        brick.shape('square')
-        brick.penup()
-        brick.hideturtle()
-        brick.goto(x, y)
-        brick.color('blue')
-        brick.showturtle()
-        x -= 30
-        if x == -300:
-            break
+# def make_bricks():
+x = 300
+y = 190
+for brick in range(20):
+    brick = turtle.Turtle()
+    brick.speed(0)
+    brick.color('black')
+    brick.shape('square')
+    brick.penup()
+    brick.hideturtle()
+    brick.goto(x, y)
+    brick.color('blue')
+    brick.showturtle()
+    x -= 30
+    if x == -300:
+        break
+x = 300
+y = 140
+for brick in range(20):
+    brick = turtle.Turtle()
+    brick.speed(0)
+    brick.color('black')
+    brick.shape('square')
+    brick.penup()
+    brick.hideturtle()
+    brick.goto(x, y)
+    brick.color('blue')
+    brick.showturtle()
+    x -= 30
+    if x == -300:
+        break
+x = 300
+y = 90
+for brick in range(20):
+    brick = turtle.Turtle()
+    brick.speed(0)
+    brick.color('black')
+    brick.shape('square')
+    brick.penup()
+    brick.hideturtle()
+    brick.goto(x, y)
+    brick.color('blue')
+    brick.showturtle()
+    x -= 30
+    if x == -300:
+        break
 
 
-make_bricks()
+# make_bricks()
 
-# wn.listen()
-# wn.onclick(board.goto)
-angle = random.randint(30, 90)  # current place of work so resume here
-# board.getscreen()._root.mainloop()
-# print("hi")
-
+angle = random.randint(30, 90)
+ball.left(angle)
 while True:
-    wn.update()
-    # for head going ouside boundary
-    ball.onclick(ball.left(angle))
-    ball.forward(10000)
-    if ball.xcor() > 250 or ball.xcor() < -250 or ball.ycor() > 250 or ball.ycor() < -250:
-        ball.left(-360, 360)
-        ball.forward(10000)
+    if random.randint(0, 1) == 0:
+        angle = 120
+    else:
+        angle = 150
+    if ball.xcor() > -280 and ball.xcor() < 310 and ball.ycor() > -280 and ball.ycor() < 200:  # this represents the boundary
+        wn.update()
+        ball.forward(5)
+        if ball.distance(brick) < 20:
+            ball.left(angle)
+            ball.forward(7)
+        # the ball will now stop at the boundary
+    else:
+        ball.left(angle)
+        ball.forward(7)
+        while ball.xcor() > -280 and ball.xcor() < 310 and ball.ycor() > -280 and ball.ycor() < 200:  # this represents the boundary
+            wn.update()
+            ball.forward(7)
+
 
 wn.mainloop()
 
