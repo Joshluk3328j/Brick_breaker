@@ -12,6 +12,7 @@ wn.title('Brick Breaker')
 
 # pen
 pen = turtle.Turtle()
+pen.speed(0)
 pen.color('green')
 pen.penup()
 pen.hideturtle()
@@ -55,82 +56,121 @@ board.shape("square")
 board.color("purple")
 board.shapesize(1, 5)
 board.penup()
-board.goto(0, -250)
+b_y = -250
+board.goto(0, b_y)
 board.direction = "stop"
 
 
 # make bricks
 # def make_bricks():
-x = 300
-y = 190
-for brick in range(20):
-    brick = turtle.Turtle()
-    brick.speed(0)
-    brick.color('black')
-    brick.shape('square')
-    brick.penup()
-    brick.hideturtle()
-    brick.goto(x, y)
-    brick.color('blue')
-    brick.showturtle()
-    x -= 30
-    if x == -300:
-        break
-x = 300
-y = 140
-for brick in range(20):
-    brick = turtle.Turtle()
-    brick.speed(0)
-    brick.color('black')
-    brick.shape('square')
-    brick.penup()
-    brick.hideturtle()
-    brick.goto(x, y)
-    brick.color('blue')
-    brick.showturtle()
-    x -= 30
-    if x == -300:
-        break
-x = 300
-y = 90
-for brick in range(20):
-    brick = turtle.Turtle()
-    brick.speed(0)
-    brick.color('black')
-    brick.shape('square')
-    brick.penup()
-    brick.hideturtle()
-    brick.goto(x, y)
-    brick.color('blue')
-    brick.showturtle()
-    x -= 30
-    if x == -300:
-        break
+# x = 300
+# y = 190
+# for brick in range(20):
+#     brick = turtle.Turtle()
+#     brick.speed(0)
+#     brick.color('black')
+#     brick.shape('square')
+#     brick.penup()
+#     brick.hideturtle()
+#     brick.goto(x, y)
+#     brick.color('blue')
+#     brick.showturtle()
+#     x -= 30
+#     if x == -300:
+#         break
+# x = 300
+# y = 140
+# for brick in range(20):
+#     brick = turtle.Turtle()
+#     brick.speed(0)
+#     brick.color('black')
+#     brick.shape('square')
+#     brick.penup()
+#     brick.hideturtle()
+#     brick.goto(x, y)
+#     brick.color('blue')
+#     brick.showturtle()
+#     x -= 30
+#     if x == -300:
+#         break
+# x = 300
+# y = 90
+# for brick in range(20):
+#     brick = turtle.Turtle()
+#     brick.speed(0)
+#     brick.color('black')
+#     brick.shape('square')
+#     brick.penup()
+#     brick.hideturtle()
+#     brick.goto(x, y)
+#     brick.color('blue')
+#     brick.showturtle()
+#     x -= 30
+#     if x == -300:
+#         break
 
 
 # make_bricks()
 
+def move_right():
+    x = board.xcor()
+    x += 40
+    board.goto(x, b_y)
+
+
+def move_left():
+    x = board.xcor()
+    x -= 40
+    board.goto(x, b_y)
+
+
+wn.listen()
+wn.onkeypress(move_right, "d")
+wn.onkeypress(move_left, "a")
+
 angle = random.randint(30, 90)
 ball.left(angle)
 while True:
-    if random.randint(0, 1) == 0:
-        angle = 120
-    else:
-        angle = 150
-    if ball.xcor() > -280 and ball.xcor() < 310 and ball.ycor() > -280 and ball.ycor() < 200:  # this represents the boundary
+    ball.forward(5)
+    wn.listen()
+    wn.onkeypress(move_right, "d")
+    wn.onkeypress(move_left, "a")
+    angle = 120
+    b_y = board.ycor()
+    b_x = board.xcor()
+    ball_y = ball.ycor()
+    ball_x = ball.xcor()
+    if ball.xcor() > -280 and ball.xcor() < 310 and ball.ycor() < 200:
+        # this represents the boundary
         wn.update()
         ball.forward(5)
-        if ball.distance(brick) < 20:
-            ball.left(angle)
-            ball.forward(7)
+        # if ball.distance(brick) < 20:
+        #     ball.left(angle)
+        #     ball.forward(7)
+
         # the ball will now stop at the boundary
+    elif ball.ycor() <= -280:
+        pen.goto(0, 0)
+        pen.write('Game Over', align='center', font=("Helvetica", "16"))
+        ball.hideturtle
+        time.sleep(1)
+        pen.clear()
+        ball.goto(board.xcor(), board.ycor()+20)
+        pen.goto(0, 230)
+        pen.write('Score: 0  High score: 0',
+                  align='center', font=("Helvetica", "16"))
+        ball.showturtle
+        ball.left(angle)
+        ball.forward(7)
     else:
         ball.left(angle)
         ball.forward(7)
         while ball.xcor() > -280 and ball.xcor() < 310 and ball.ycor() > -280 and ball.ycor() < 200:  # this represents the boundary
             wn.update()
             ball.forward(7)
-
+    if b_y - ball_y < 5 and -5 < b_x - ball_x < 5:
+        ball.left(angle)
+        ball.forward(7)
 
 wn.mainloop()
 
